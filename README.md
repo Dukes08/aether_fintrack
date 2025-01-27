@@ -31,13 +31,13 @@ Starts the containers for both services.
 Front-End:
 You need to add this configuration in src/environments/environment.ts:
 export const environment = {
-  apiUrl: 'http://localhost:3001', // API URL for the Express back-end
+  apiUrl: '', // API URL for the Express back-end
 };
 
 Back-End:
 You need to add this configuration in .env at the root level:
-MONGODB_URI=mongodb+srv://admin:CXVyI2p9xmMGfnSm@cluster101.495qt.mongodb.net/?retryWrites=true&w=majority&appName=Aether
-PORT=3001
+MONGODB_URI=
+PORT=
 
 
 ### 4. Access the Application
