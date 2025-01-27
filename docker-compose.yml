@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  angular-app:
+    build:
+      context: ./aether_fintrack_frontend
+    ports:
+      - "4200:4200"
+
+  express-app:
+    build:
+      context: ./aether_backend
+    ports:
+      - "3001:3001"
+

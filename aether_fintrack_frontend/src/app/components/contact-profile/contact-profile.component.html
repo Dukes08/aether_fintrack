@@ -1,0 +1,85 @@
+<div class="p-6">
+  <div class="flex flex-row w-full justify-evenly items-center">
+    <div class="mb-6">
+      <button
+        (click)="goBack()"
+        class="text-gray-600 hover:text-gray-900 flex items-center gap-2"
+      >
+        ← Back to Contacts
+      </button>
+    </div>
+
+    <div class="w-[750px]">
+      <div *ngIf="contact" class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex items-center gap-6 mb-6">
+          <ng-icon name="heroUser" class="w-10 h-10"></ng-icon>
+          <div>
+            <h2 class="text-2xl font-bold mb-2">{{ contact.name }}</h2>
+            <p class="text-gray-600 mb-2">{{ contact.email }}</p>
+            <p class="text-xl font-semibold">
+              Current Balance:
+              <span
+                [class.text-green-600]="contact.balance >= 0"
+                [class.text-red-600]="contact.balance < 0"
+              >
+                {{ contact.balance | currency }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t pt-6">
+        <h3 class="text-xl font-semibold mb-4">Transaction History</h3>
+        <div class="overflow-x-auto">
+          <div class="max-h-64 overflow-y-auto">
+            
+            <table class="w-full">
+              <thead class="sticky top-0">
+                <tr class="bg-gray-50">
+                  <th class="p-- text-left">Date</th>
+                  <th class="p-3 text-left">Type</th>
+                  <th class="p-3 text-left">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let operation of operations" class="border-b">
+                  <td class="p-3">
+                    {{ operation.createdAt | date : "medium" }}
+                  </td>
+                  <td class="p-3">
+                    <span
+                      [class.text-green-600]="operation.type === 'income'"
+                      [class.text-red-600]="operation.type === 'expense'"
+                      class="font-medium"
+                    >
+                      {{ operation.type === "income" ? "Income" : "Expense" }}
+                    </span>
+                  </td>
+                  <td class="p-3">
+                    <span
+                    >
+                      {{ operation.type === "income" ? "+" : "-" }}
+                      {{ operation.amount | currency }}
+                    </span>
+                  </td>
+
+                  <td class="p-3"></td>
+                </tr>
+                <tr *ngIf="operations.length === 0">
+                  <td colspan="4" class="p-3 text-center text-gray-500">
+                    No transactions found
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!contact" class="text-center text-gray-600">
+      Contact not found
+    </div>
+  </div>
+</div>

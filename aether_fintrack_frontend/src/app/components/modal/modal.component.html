@@ -1,0 +1,82 @@
+<div class="fixed inset-0 flex items-center justify-center">
+  
+  <div class="absolute inset-0 bg-black opacity-50"></div>
+
+  
+  <div class="bg-white rounded-lg p-6 w-96 z-10">
+    <h2 class="text-xl font-bold mb-4">Create New Contact</h2>
+
+    <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+      <div *ngFor="let field of fields" class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          {{ field.label }}
+        </label>
+
+        <!-- Input Field -->
+        <div *ngIf="field.type !== 'select'">
+          <input
+            [(ngModel)]="formData[field.name]"
+            [type]="field.type"
+            [name]="field.name"
+            [required]="field.required ?? false"
+            [min]="field.minValue ?? null"
+            [max]="field.maxValue ?? null"
+            class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="
+              contactForm.controls[field.name]?.invalid &&
+              contactForm.controls[field.name]?.touched
+            "
+            #inputField="ngModel"
+          />
+        </div>
+
+        <!-- Select Field -->
+        <div *ngIf="field.type === 'select'">
+          <select
+            [(ngModel)]="formData[field.name]"
+            [name]="field.name"
+            [required]="field.required ?? false"
+            class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="
+              contactForm.controls[field.name]?.invalid &&
+              contactForm.controls[field.name]?.touched
+            "
+            #selectField="ngModel"
+          >
+            <option *ngFor="let option of field.options" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        
+        <div
+          *ngIf="(contactForm.controls[field.name]?.invalid && contactForm.controls[field.name]?.touched)"
+          class="text-red-500 text-sm mt-1"
+        >
+          <ng-container *ngIf="field.minValue">
+            Name must be at least {{ field.minValue }} characters long
+          </ng-container>
+        </div>
+      </div>
+
+      
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          [disabled]="contactForm.invalid"
+        >
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

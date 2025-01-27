@@ -1,0 +1,68 @@
+<div class="m-20 p-4 border-2 border-gray-200 rounded-lg min-h-[550px] max-h-[550px] flex flex-col bg-white">
+  <div class="flex justify-between mb-4">
+    <h2 class="text-xl font-bold sticky top-0">Contacts</h2> 
+    <button class="bg-blue-600 text-white px-4 py-2 rounded" (click)="openCreateContactModal()">
+      New Contact
+    </button>
+  </div>
+
+  <div class="overflow-y-auto">
+    <table class="w-full">
+      <thead class="sticky top-0 bg-gray-100">
+        <tr>
+          <th class="w-1/5 p-2 text-left">Profile</th>
+          <th class="w-1/5 p-2 text-left">Email</th>
+          <th class="w-1/5 p-2 text-left">Name</th>
+          <th class="w-1/5 p-2 text-left">Balance</th>
+          <th class="w-1/5 p-2 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let contact of contacts; let last = last" [class.border-b]="!last" [routerLink]="['/contact-profile', contact._id]">
+          <td class="p-2"><ng-icon name="heroUser"></ng-icon></td>
+          <td class="p-2">{{ contact.email }}</td>
+          <td class="p-2">{{ contact.name }}</td>
+          <td
+            class="p-2"
+            [class.text-green-600]="contact.balance >= 0"
+            [class.text-red-600]="contact.balance < 0"
+          >
+            {{ contact.balance | currency }}
+          </td>
+          <td class="p-2">
+            <div class="flex gap-2">
+              <button class="bg-blue-600 text-white px-1 py-2 rounded" (click)="openEditBalanceModal(contact); $event.stopPropagation()">
+                Edit Balance
+              </button>
+              <button class="bg-gray-500 text-white px-1 py-2 rounded" (click)="openEditContactName(contact); $event.stopPropagation()">
+                Edit Name
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-modal
+    *ngIf="showCreateModal"
+    [fields]="createModalFields"
+    (create)="handleCreateContact($event)"
+    (close)="closeCreateModal()"
+  ></app-modal>
+
+  <app-modal
+    *ngIf="showEditBalanceModal"
+    [fields]="editModalFields"
+    (create)="handleEditBalance($event)"
+    (close)="closeEditBalanceModal()"
+  ></app-modal>
+
+  <app-modal
+    *ngIf="showEditNameModal"
+    [fields]="editContactNameField"
+    (create)="handleNameEditing($event)"
+    (close)="closeEditNameModal()"
+  ></app-modal>
+</div>
+
